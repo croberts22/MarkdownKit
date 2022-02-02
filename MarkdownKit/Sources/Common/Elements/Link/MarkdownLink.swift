@@ -9,7 +9,7 @@ import Foundation
 
 open class MarkdownLink: MarkdownLinkElement {
 
-  fileprivate static let regex = "(\\[[^\\]]+)(\\]\\([^\\s]+)?\\)"
+  fileprivate static let regex = "(\\[[^\\]]+\\])(\\([^\\s]+)?\\)"
 
   private let schemeRegex = "([a-z]{2,20}):\\/\\/"
 
@@ -46,11 +46,13 @@ open class MarkdownLink: MarkdownLinkElement {
   }
 
   open func match(_ match: NSTextCheckingResult, attributedString: NSMutableAttributedString) {
+
+      let firstMatch = match.range(at: 1)
     // Remove opening bracket
-    attributedString.deleteCharacters(in: NSRange(location: match.range(at: 1).location, length: 1))
+    attributedString.deleteCharacters(in: NSRange(location: firstMatch.location, length: 1))
 
     // Remove closing bracket
-    attributedString.deleteCharacters(in: NSRange(location: match.range(at: 2).location - 1, length: 1))
+      attributedString.deleteCharacters(in: NSRange(location: firstMatch.location + (firstMatch.length - 2), length: 1))
 
     let urlStart = match.range(at: 2).location
 
@@ -73,13 +75,13 @@ open class MarkdownLink: MarkdownLinkElement {
     }
 
     // Remove opening parantheses
-    attributedString.deleteCharacters(in: NSRange(location: match.range(at: 2).location, length: 1))
+    attributedString.deleteCharacters(in: NSRange(location: match.range(at: 2).location - 2, length: 1))
 
     // Remove closing parantheses
-    let trailingMarkdownRange = NSRange(location: match.range(at: 2).location - 1, length: urlString.count + 1)
+    let trailingMarkdownRange = NSRange(location: match.range(at: 2).location - 2, length: urlString.count + 2)
     attributedString.deleteCharacters(in: trailingMarkdownRange)
 
-    let formatRange = NSRange(match.range(at: 1).location..<match.range(at: 2).location - 1)
+    let formatRange = NSRange(match.range(at: 1).location..<match.range(at: 2).location - 2)
 
     // Add attributes while preserving current attributes
 
