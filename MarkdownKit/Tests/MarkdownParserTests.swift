@@ -6,8 +6,11 @@
 //  Copyright © 2021 Ivan Bruel. All rights reserved.
 //
 
-import XCTest
 @testable import MarkdownKit
+import XCTest
+
+// MARK: - Tests
+
 class Tests: XCTestCase {
 
     var sut: MarkdownParser!
@@ -179,13 +182,13 @@ class Tests: XCTestCase {
             let attributedString = sut.parse($0.string)
 
             if !$0.prefix.isEmpty {
-                var prefixRange = NSRange(0..<$0.prefix.count)
+                var prefixRange = NSRange(0 ..< $0.prefix.count)
                 let prefixAttributes = attributedString.attributes(at: 0, effectiveRange: &prefixRange)
 
                 XCTAssertNil(prefixAttributes[NSAttributedString.Key.link])
             }
 
-            var range = NSRange(0..<($0.title.count))
+            var range = NSRange(0 ..< ($0.title.count))
             let attributes = attributedString.attributes(at: $0.prefix.count, effectiveRange: &range)
             let linkAttribute = attributes[NSAttributedString.Key.link]
 
@@ -197,7 +200,7 @@ class Tests: XCTestCase {
             }
 
             if !$0.suffix.isEmpty {
-                var suffixRange = NSRange(0..<$0.suffix.count)
+                var suffixRange = NSRange(0 ..< $0.suffix.count)
                 let suffixAttributes = attributedString.attributes(at: $0.title.count + $0.prefix.count, effectiveRange: &suffixRange)
 
                 XCTAssertNil(suffixAttributes[NSAttributedString.Key.link])
@@ -219,7 +222,6 @@ class Tests: XCTestCase {
         XCTAssertEqual(sut.parse(links[0].string).link, defaultScheme + links[0].url)
         XCTAssertEqual(sut.parse(links[1].string).link, links[1].url)
     }
-
 
     func testLinkShouldParseDifferentSchemes() {
         let links: [Link] = [
@@ -255,7 +257,7 @@ class Tests: XCTestCase {
     }
 }
 
-fileprivate extension MarkdownFont {
+private extension MarkdownFont {
 
     enum AttributeType {
         case bold, italic
@@ -263,29 +265,29 @@ fileprivate extension MarkdownFont {
 
     func contains(attribute: AttributeType) -> Bool {
         #if canImport(AppKit)
-        let traits = NSFontManager().traits(of: self)
+            let traits = NSFontManager().traits(of: self)
         #elseif canImport(UIKit)
-        let traits = self.fontDescriptor.symbolicTraits
+            let traits = fontDescriptor.symbolicTraits
         #endif
 
         switch attribute {
         case .bold:
             #if canImport(AppKit) && !targetEnvironment(macCatalyst)
-            return traits.contains(NSFontTraitMask.boldFontMask)
+                return traits.contains(NSFontTraitMask.boldFontMask)
             #elseif canImport(UIKit)
-            return traits.contains(.traitBold)
+                return traits.contains(.traitBold)
             #endif
         case .italic:
             #if canImport(AppKit) && !targetEnvironment(macCatalyst)
-            return traits.contains(NSFontTraitMask.italicFontMask)
+                return traits.contains(NSFontTraitMask.italicFontMask)
             #elseif canImport(UIKit)
-            return traits.contains(.traitItalic)
+                return traits.contains(.traitItalic)
             #endif
         }
     }
 }
 
-fileprivate extension NSAttributedString {
+private extension NSAttributedString {
     func isSurroundedBy(_ occurrences: String...) -> Bool {
         occurrences.map {
             string.hasPrefix($0) || string.hasSuffix($0)
@@ -293,7 +295,7 @@ fileprivate extension NSAttributedString {
     }
 
     var link: String {
-        var range = NSRange(0..<self.length)
+        var range = NSRange(0 ..< length)
         let attributes = self.attributes(at: 0, effectiveRange: &range)
         return (attributes[NSAttributedString.Key.link] as? NSURL)?.absoluteString ?? ""
     }

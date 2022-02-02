@@ -7,10 +7,10 @@
 //
 #if canImport(AppKit) && !targetEnvironment(macCatalyst)
 
-import AppKit
+    import AppKit
 
-public extension MarkdownHeader {
-  static let defaultFont = NSFont.boldSystemFont(ofSize: NSFont.systemFontSize)
-}
+    public extension MarkdownHeader {
+        static let defaultFont = NSFont.boldSystemFont(ofSize: NSFont.systemFontSize)
+    }
 
 #endif

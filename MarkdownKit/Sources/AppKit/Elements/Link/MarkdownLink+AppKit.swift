@@ -7,10 +7,10 @@
 //
 #if canImport(AppKit) && !targetEnvironment(macCatalyst)
 
-import AppKit
+    import AppKit
 
-public extension MarkdownLink {
-  static let defaultColor = NSColor.blue
-}
+    public extension MarkdownLink {
+        static let defaultColor = NSColor.blue
+    }
 
 #endif

@@ -8,32 +8,32 @@
 
 #if canImport(UIKit)
 
-import UIKit
+    import UIKit
 
-extension UIFont {
+    extension UIFont {
 
-  func withTraits(_ traits: UIFontDescriptor.SymbolicTraits...) -> UIFont? {
-    guard let descriptor = fontDescriptor.withSymbolicTraits(UIFontDescriptor.SymbolicTraits(traits)) else {
-        return nil
+        func withTraits(_ traits: UIFontDescriptor.SymbolicTraits...) -> UIFont? {
+            guard let descriptor = fontDescriptor.withSymbolicTraits(UIFontDescriptor.SymbolicTraits(traits)) else {
+                return nil
+            }
+            return UIFont(descriptor: descriptor, size: 0)
+        }
+
+        func bold() -> UIFont {
+            withTraits(fontDescriptor.symbolicTraits, .traitBold) ?? self
+        }
+
+        func italic() -> UIFont {
+            withTraits(fontDescriptor.symbolicTraits, .traitItalic) ?? self
+        }
+
+        func isItalic() -> Bool {
+            fontDescriptor.symbolicTraits.contains(.traitItalic)
+        }
+
+        func isBold() -> Bool {
+            fontDescriptor.symbolicTraits.contains(.traitBold)
+        }
     }
-    return UIFont(descriptor: descriptor, size: 0)
-  }
-
-  func bold() -> UIFont {
-    return withTraits(fontDescriptor.symbolicTraits, .traitBold) ?? self
-  }
-
-  func italic() -> UIFont {
-    return withTraits(fontDescriptor.symbolicTraits, .traitItalic) ?? self
-  }
-
-  func isItalic() -> Bool {
-    return fontDescriptor.symbolicTraits.contains(.traitItalic)
-  }
-
-  func isBold() -> Bool {
-    return fontDescriptor.symbolicTraits.contains(.traitBold)
-  }
-}
 
 #endif

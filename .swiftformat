@@ -1,0 +1,10 @@
+--swiftversion 5.3
+--exclude Pods,Carthage,Generated,AniListSDK/GraphQL,**/.build,DangerDependencies
+
+--marktypes if-not-empty
+--extensionmark "MARK: - %t + %c Methods"
+--groupedextension "MARK: - %c Methods"
+--varattributes preserve
+
+--disable blankLinesAtStartOfScope,elseOnSameLine,trailingCommas,wrapMultilineStatementBraces
+--enable isEmpty,markTypes
